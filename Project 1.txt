@@ -1,0 +1,53 @@
+# Using R to analyze the returns of 3 stocks; specifically
+# Tesla, BMW, Audi from 2020 to 2024
+
+# Tesla Inc --> TSLA
+# Audi --> VOW3.DE
+# BMW --> BMW.DE
+#================================================
+install.packages('quantmod')
+install.packages('PerformanceAnalytics')
+library('quantmod')
+library('PerformanceAnalytics')
+require('quantmod')
+require('PerformanceAnalytics')
+#loading the daily closing prices of three stocks
+getSymbols(c("TSLA", "VOW3.DE", "BMW.DE"), from = "2020-01-01", to = "2024-12-31")
+prices <- merge(Ad(TSLA), Ad(VOW3.DE), Ad(BMW.DE))
+
+#Turning the prices into yearly
+colnames <- (c("TSLA","VOW3.DE", "BMW.DE"))
+
+# Use the last trading day of each year
+yearly_prices <- to.yearly(prices, indexAt = "lastof", OHLC = FALSE)
+yearly_returns <- na.omit(Return.calculate(yearly_prices,method = 'discrete'))
+
+print(yearly_returns)
+chart.TimeSeries(yearly_returns, main = "Yearly Log Returns", legend.loc = "topleft")
+
+#======================================================================
+#project 2
+
+#Using R to analyze the returns of 5 stocks in Banking sector; specifically
+# Apple inc, Microsoft, Meta, Google, Adobe inc from 2020 to 2024
+
+# Apples inc --> AAPL
+# Microsoft --> MSFT
+# Meta --> META
+# Google --> GOOG
+# Adobe inc --> ADBE
+
+install.packages('quantmod')
+install.packages('PerformaceAnalytics')
+library('quantmod')
+library('PerformanceAnalytics')
+getSymbols(c("AAPL","MSFT","META","GOOG","ADBE"), from = "2020-01-01", to = "2024-12-31")
+Adjusted_prices<-merge(Ad(AAPL),Ad(MSFT),Ad(META),Ad(GOOG),Ad(ADBE))
+colnames(Adjusted_prices)<-c('AAPL','MSFT','META','GOOG','ADBE')
+
+
+yearly_prices1 <- apply.yearly(Adjusted_prices, last)  # Get last price of each year
+yearly_return1 <- na.omit(Return.calculate(yearly_prices1, method = "discrete"))
+
+print(yearly_return1)
+chart.TimeSeries(yearly_return1, main = "Yearly Log Returns", legend.loc = "topleft")
